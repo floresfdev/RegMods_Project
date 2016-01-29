@@ -102,6 +102,30 @@ After the analysis of variance, the p-values for models 2 and 3 are statisticall
 
 ### Model selection
 
+#### Coefficients and variability explained
+
+Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability.
+
+```{r modelCoeff}
+summary(fit2)$coefficients
+adjRSquared2 <- summary(fit2)$adj.r.squared
+adjRSquared2
+
+summary(fit3)$coefficients
+adjRSquared3 <- summary(fit3)$adj.r.squared
+adjRSquared3
+
+```
+
+In the second model, the transmission type explains `{r round(adjRSquared2, 2) * 100}`% of the variability in MPG, while the third explains `{r round(adjRSquared3, 2) * 100}`% and it's still parsimonious, even more than the previous one.
+
+
+
+#### Residuals
+
+
+#### Diagnostics
+
 
 ## Conclusions
 
