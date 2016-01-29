@@ -53,6 +53,27 @@ The boxplot of fuel consumption by transmission type can be found in appendix A2
 
 ### Primary model
 
+As a first step we fit a primary linear model with Miles/US gallon (variable `mpg`) as outcome and transmission type (variabla `am`) as regressor.
+
+```{r primaryModel}
+fitPrimary <- lm(mpg ~ am, data = mtcars)
+coeffPrimary <- summary(fitPrimary)$coefficients
+coeffPrimary
+```
+
+*Figure N. Coefficients summary of the primary model*
+
+In the model, `{r coeffPrimary[1]` is the mean of MPG for the automatic transmission. For the case of manual transmission, the value of `{r coeffPrimary[2]}` is an additional increase.
+
+According to the p-value, which is `{r round(coeffPrimary[8], 4)}` and <0.05, this model is statistically significant.
+
+```{r primaryModelRSquared}
+rSquaredPrimary <- summary(fitPrimary)$r.squared
+rSquaredPrimary
+```
+
+By looking at the R-squared value we can see that the transmission type explains only `{r round(rSquaredPrimary, 2) * 100}`% of the variability of MPG. This value is not good enough for our analysis, so we will have to use nested models to select a better one.
+
 
 ### Secondary models
 
@@ -88,5 +109,5 @@ boxplot(mpg ~ am, data = mtcars,
         main = "Fuel consumption by transmission types")
 ```
 
-*Figure 1. Boxplot of fuel consumption by transmission types*
+*Figure N. Boxplot of fuel consumption by transmission types*
 

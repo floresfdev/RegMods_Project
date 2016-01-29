@@ -50,7 +50,7 @@ summary(fitPrimary)
 summary(fitPrimary)$coefficients
 ##              Estimate Std. Error   t value     Pr(>|t|)
 ## (Intercept) 17.147368   1.124603 15.247492 1.133983e-15
-## factor(am)1  7.244939   1.764422  4.106127 2.850207e-04
+## amManual     7.244939   1.764422  4.106127 2.850207e-04
 summary(fitPrimary)$r.squared
 ## [1] 0.3597989 => 36% of the variability on MPG is explained by transmission
 
