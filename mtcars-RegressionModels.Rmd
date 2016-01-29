@@ -1,0 +1,51 @@
+---
+title: Motor Trend car tests - Relationship between type of transmission and fuel
+  consumption
+author: "Fernando Flores"
+date: "January 28th, 2016"
+output: word_document
+---
+
+```{r setoptions, echo = FALSE, warning = FALSE}
+library(knitr)
+opts_chunk$set(warning = TRUE, #Make it FALSE for distribution!
+               message = TRUE, #Make it FALSE for distribution!
+               fig.width = 12,
+               fig.height = 6)
+```
+
+
+## Execute Summary
+
+The current report aims to investigate ...
+
+
+## Exploratory Data Analysis
+
+
+
+## Regression Models
+
+### Primary model
+
+
+### Secondary models
+
+
+### Model selection
+
+
+## Conclusions
+
+
+
+## Appendix
+
+### A1. Code for boxplot
+
+*Figure N. Boxplot of ...*
+
+```{r loadData_code, ref.label="loadData", echo = TRUE, eval = FALSE} 
+
+```
+
