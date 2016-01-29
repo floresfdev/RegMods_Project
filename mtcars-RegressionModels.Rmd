@@ -17,11 +17,34 @@ opts_chunk$set(warning = TRUE, #Make it FALSE for distribution!
 
 ## Execute Summary
 
-The current report aims to investigate ...
+The current report aims to investigate the relationship between the type of transmission and fuel consumption based on data of 32 cars tested by Motor Trend US magazine for an issue published in 1974. The main target is to assess if automatic or manual transmission is better for MPG (miles per US gallon), and quantify the consumption difference for the mentioned transmission types.
 
 
 ## Exploratory Data Analysis
 
+```{r loadData}
+library(datasets)
+data(mtcars)
+```
+
+The basic features of the dataset are summarized in appendix A1. More details can be found in [the documentation online](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html)
+
+```{r dimData, echo = FALSE}
+rowNumber <- nrow(mtcars)
+colNumber <- ncol(mtcars)
+```
+
+The source dataset has `{r colNumber}` columns of information from `{r rowNumber}` cars. The information contained in some of the variables is needing reformat for the sake of the current analysis. For the specifics of columns `vs` and `am` see [this post in StackOverflow](http://stackoverflow.com/questions/18617174/r-mtcars-dataset-meaning-of-vs-variable)
+
+```{r reformatData}
+mtcars$cyl <- as.factor(mtcars$cyl)    ## Number of cylinders
+mtcars$gear <- as.factor(mtcars$gear)  ## Number of forward gears
+mtcars$carb <- as.factor(mtcars$carb)  ## Number of carburetors
+mtcars$vs <- as.factor(mtcars$vs)      ## Straight or V-engine
+levels(mtcars$vs) <- c("V-engine", "Straight engine")
+mtcars$am <- as.factor(mtcars$am)      ## Transmission
+levels(mtcars$am) <- c("Automatic", "Manual")
+```
 
 
 ## Regression Models
@@ -41,7 +64,13 @@ The current report aims to investigate ...
 
 ## Appendix
 
-### A1. Code for boxplot
+### A1. Summary of the data
+
+```{r summaryData}
+str(mtcars)
+```
+
+### A2. Code for boxplot
 
 *Figure N. Boxplot of ...*
 
