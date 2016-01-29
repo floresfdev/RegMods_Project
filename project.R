@@ -42,7 +42,7 @@ boxplot(mpg ~ am, data = mtcars,
         col = c("coral", "aquamarine"),
         xlab = "Transmission type",
         ylab = "Miles/US gallon (mpg)",
-        main = "Fuel consumption and transmission types")
+        main = "Fuel consumption by transmission types")
 
 # Linear model
 fitPrimary <- lm(mpg ~ am, data = mtcars)

@@ -46,6 +46,8 @@ mtcars$am <- as.factor(mtcars$am)      ## Transmission
 levels(mtcars$am) <- c("Automatic", "Manual")
 ```
 
+The boxplot of fuel consumption by transmission type can be found in appendix A2. This plot gives helpful information about how well manual and automatic transmission performs regarding MPG for the cars tested, but in order to answer the questions of interest we have to analyze regression models.
+
 
 ## Regression Models
 
@@ -60,6 +62,10 @@ levels(mtcars$am) <- c("Automatic", "Manual")
 
 ## Conclusions
 
+- Is an automatic or manual transmission better for MPG?
+
+- Quantify the MPG difference between automatic and manual transmissions.
+
 
 
 ## Appendix
@@ -70,11 +76,17 @@ levels(mtcars$am) <- c("Automatic", "Manual")
 str(mtcars)
 ```
 
-### A2. Code for boxplot
 
-*Figure N. Boxplot of ...*
+### A2. Boxplot of fuel consumption by transmission type
 
-```{r loadData_code, ref.label="loadData", echo = TRUE, eval = FALSE} 
-
+```{r boxplot}
+par(mfrow = c(1, 1), mar = c(4, 4, 2, 1))
+boxplot(mpg ~ am, data = mtcars,
+        col = c("coral", "aquamarine"),
+        xlab = "Transmission type",
+        ylab = "Miles/US gallon (mpg)",
+        main = "Fuel consumption by transmission types")
 ```
+
+*Figure 1. Boxplot of fuel consumption by transmission types*
 
