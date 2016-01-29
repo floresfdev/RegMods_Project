@@ -63,7 +63,7 @@ coeffPrimary
 
 *Figure N. Coefficients summary of the primary model*
 
-In the model, `{r coeffPrimary[1]` is the mean of MPG for the automatic transmission. For the case of manual transmission, the value of `{r coeffPrimary[2]}` is an additional increase.
+In the model, `{r coeffPrimary[1]` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `{r coeffPrimary[2]}` is an additional increase to the mentioned MPG mean.
 
 According to the p-value, which is `{r round(coeffPrimary[8], 4)}` and <0.05, this model is statistically significant.
 
@@ -72,10 +72,32 @@ rSquaredPrimary <- summary(fitPrimary)$r.squared
 rSquaredPrimary
 ```
 
-By looking at the R-squared value we can see that the transmission type explains only `{r round(rSquaredPrimary, 2) * 100}`% of the variability of MPG. This value is not good enough for our analysis, so we will have to use nested models to select a better one.
+By looking at the R-squared value we can see that the transmission type explains only `{r round(rSquaredPrimary, 2) * 100}`% of the variability in MPG. This value is not good enough for our analysis, so we will have to use nested models to select a better one.
 
 
-### Secondary models
+### Secondary Models
+
+After researching general information about the car features described on the dataset, the variables related to fuel consumption in practice are:
+
+- `hp`: Gross horsepower, a unit of measurement of engine power.
+- `wt`: Weight (lb/1000).
+- `qsec`: 1/4 mile time, which can be a good measure of acceleration by proxy.
+- `gear`: Number of forward gears, which is related to transmission.
+- `carb`: Number of carburetors, the device in charge of air-fuel mix for better consumption performance.
+
+Besides the transmission type (`am`), this 5 variables are included one by one in nested models to look for a fitted linear model that can explain better the MPG variability.
+
+```{r secondaryModels}
+fit2 <- update(fitPrimary, mpg ~ am + hp)
+fit3 <- update(fitPrimary, mpg ~ am + hp + wt)
+fit4 <- update(fitPrimary, mpg ~ am + hp + wt + qsec)
+fit5 <- update(fitPrimary, mpg ~ am + hp + wt + qsec + gear)
+fit6 <- update(fitPrimary, mpg ~ am + hp + wt + qsec + gear + carb)
+
+anova(fitPrimary, fit2, fit3, fit4, fit5, fit6)
+```
+
+After the analysis of variance, the p-values for models 2 and 3 are statistically significant. Both are also parsimonious so they are good candidates for the definitive model.
 
 
 ### Model selection
