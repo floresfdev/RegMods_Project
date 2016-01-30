@@ -22,7 +22,7 @@ The current report aims to investigate the relationship between the type of tran
 
 ## Exploratory Data Analysis
 
-```{r loadData}
+```{r loadData, echo = FALSE}
 library(datasets)
 data(mtcars)
 ```
@@ -63,9 +63,9 @@ fitPrimary <- lm(mpg ~ am, data = mtcars)
 coeffPrimary <- summary(fitPrimary)$coefficients
 ```
 
-The coefficient summary table can be found in appendix A3. In the model, `r coeffPrimary[1]` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r coeffPrimary[2]` is an additional increase to the mentioned MPG mean.
+The coefficient summary table can be found in appendix A3. In the model, `r round(coeffPrimary[1], 2)` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r round(coeffPrimary[2], 2)` is an additional increase to the mentioned MPG mean.
 
-According to the p-value, which is `r round(coeffPrimary[8], 4)` and <0.05, this model is statistically significant.
+According to the p-value, which is `r round(coeffPrimary[8], 5)` and <0.05, this model is statistically significant.
 
 ```{r primaryModelRSquared, echo = FALSE}
 rSquaredPrimary <- summary(fitPrimary)$r.squared
@@ -101,29 +101,30 @@ After the analysis of variance (table in appendix A4), the p-values for models 2
 
 #### Coefficients and variability explained
 
-The full summary of coefficients can be found in appendix A5. 
-
 ```{r modelSelectionVariability, echo = FALSE}
 adjRSquared2 <- summary(fit2)$adj.r.squared
 adjRSquared3 <- summary(fit3)$adj.r.squared
 ```
 
-Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability. In the second model, the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while the third explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
+The full summary of coefficients can be found in appendix A5. Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability. In the second model, the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while the third explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
+
+**Therefore, the linear model which fits transmission type, horsepower and weight as regressors, is a better model to predict MPG.**
 
 
+#### Residuals and diagnostics
 
-#### Residuals
+After looking at the residuals and some diagnostics metrics, we can conclude there is no potential problems with the selected model.
 
-
-#### Diagnostics
+Plots of this features can be found in appendix A6. Regarding potencial influence and leverage points, the tables can be found in appendix A7.
 
 
 ## Conclusions
 
 - Is an automatic or manual transmission better for MPG?
+<<COMPLETE!!>>
 
 - Quantify the MPG difference between automatic and manual transmissions.
-
+<<COMPLETE!!>>
 
 
 ## Appendix
@@ -171,3 +172,26 @@ adjRSquared2
 summary(fit3)$coefficients
 adjRSquared3
 ```
+
+
+### A6. Residuals and diagnostics plots
+
+```{r residualsAndDiagnosticsPlot}
+par(mfrow = c(2, 2), mar = c(5, 4, 2, 2))
+plot(fit3)
+```
+
+
+### A7. Summary of analysis for potential influence and leverage points
+
+```{r influenceSummary}
+round(dfbetas(fit3)[, 2], 3)
+```
+
+All `dfbetas` are small, no points with high potential for influence.
+
+```{r leverageSummary}
+round(hatvalues(fit3), 3)
+```
+
+The point for `Maserati Bora` has high potential for leverage but no influence.
