@@ -8,8 +8,8 @@ output: word_document
 
 ```{r setoptions, echo = FALSE, warning = FALSE}
 library(knitr)
-opts_chunk$set(warning = TRUE, #Make it FALSE for distribution!
-               message = TRUE, #Make it FALSE for distribution!
+opts_chunk$set(warning = FALSE, #Make it FALSE for distribution!
+               message = FALSE, #Make it FALSE for distribution!
                fig.width = 12,
                fig.height = 6)
 ```
@@ -67,7 +67,7 @@ coeffPrimary <- summary(fitPrimary)$coefficients
 
 The coefficient summary table can be found in appendix A3. In the model, `r round(coeffPrimary[1], 2)` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r round(coeffPrimary[2], 2)` is an additional increase to the mentioned MPG mean.
 
-According to the p-value, which is `r round(coeffPrimary[8], 5)` and <0.05, this model is statistically significant.
+The p-value is 0.0002, being <0.05 means this model is statistically significant.
 
 ```{r primaryModelRSquared, echo = FALSE}
 rSquaredPrimary <- summary(fitPrimary)$r.squared
@@ -108,9 +108,9 @@ adjRSquared2 <- summary(fit2)$adj.r.squared
 adjRSquared3 <- summary(fit3)$adj.r.squared
 ```
 
-The full summary of coefficients can be found in appendix A5. Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability. In the second model, the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while the third explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
+The full summary of coefficients can be found in appendix A5. Because this are multivariable models, the adjusted R-squared is a better metric. In model 2 the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while model 3 explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
 
-**Therefore, the linear model which fits transmission type, horsepower and weight as regressors, is a better model to predict MPG.**
+**Therefore, in this setting the better linear model to predict MPG is the one which fits transmission type, horsepower and weight as regressors.**
 
 
 #### Residuals and diagnostics
