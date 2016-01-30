@@ -34,7 +34,7 @@ rowNumber <- nrow(mtcars)
 colNumber <- ncol(mtcars)
 ```
 
-The source dataset has `{r colNumber}` columns of information from `{r rowNumber}` cars. The information contained in some of the variables is needing reformat for the sake of the current analysis. For the specifics of columns `vs` and `am` see [this post in StackOverflow](http://stackoverflow.com/questions/18617174/r-mtcars-dataset-meaning-of-vs-variable)
+The source dataset has `r colNumber` columns of information from `r rowNumber` cars. The information contained in some of the variables is needing reformat for the sake of the current analysis. For the specifics of columns `vs` and `am` see [this post in StackOverflow](http://stackoverflow.com/questions/18617174/r-mtcars-dataset-meaning-of-vs-variable)
 
 ```{r reformatData}
 mtcars$cyl <- as.factor(mtcars$cyl)    ## Number of cylinders
@@ -57,22 +57,21 @@ As a first step we fit a primary linear model with Miles/US gallon (variable `mp
 
 ```{r primaryModel}
 fitPrimary <- lm(mpg ~ am, data = mtcars)
+```
+
+```{r primaryModelCoeff, echo = FALSE}
 coeffPrimary <- summary(fitPrimary)$coefficients
-coeffPrimary
 ```
 
-*Figure N. Coefficients summary of the primary model*
+The coefficient summary table can be found in appendix A3. In the model, `r coeffPrimary[1]` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r coeffPrimary[2]` is an additional increase to the mentioned MPG mean.
 
-In the model, `{r coeffPrimary[1]` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `{r coeffPrimary[2]}` is an additional increase to the mentioned MPG mean.
+According to the p-value, which is `r round(coeffPrimary[8], 4)` and <0.05, this model is statistically significant.
 
-According to the p-value, which is `{r round(coeffPrimary[8], 4)}` and <0.05, this model is statistically significant.
-
-```{r primaryModelRSquared}
+```{r primaryModelRSquared, echo = FALSE}
 rSquaredPrimary <- summary(fitPrimary)$r.squared
-rSquaredPrimary
 ```
 
-By looking at the R-squared value we can see that the transmission type explains only `{r round(rSquaredPrimary, 2) * 100}`% of the variability in MPG. This value is not good enough for our analysis, so we will have to use nested models to select a better one.
+By looking at the R-squared value we can see that the transmission type explains only `r round(rSquaredPrimary, 2) * 100`% of the variability in MPG. This value is not good enough for our analysis, so we will have to use nested models to select a better one.
 
 
 ### Secondary Models
@@ -93,31 +92,23 @@ fit3 <- update(fitPrimary, mpg ~ am + hp + wt)
 fit4 <- update(fitPrimary, mpg ~ am + hp + wt + qsec)
 fit5 <- update(fitPrimary, mpg ~ am + hp + wt + qsec + gear)
 fit6 <- update(fitPrimary, mpg ~ am + hp + wt + qsec + gear + carb)
-
-anova(fitPrimary, fit2, fit3, fit4, fit5, fit6)
 ```
 
-After the analysis of variance, the p-values for models 2 and 3 are statistically significant. Both are also parsimonious so they are good candidates for the definitive model.
+After the analysis of variance (table in appendix A4), the p-values for models 2 and 3 are statistically significant. Both are also parsimonious so they are good candidates for the definitive model.
 
 
 ### Model selection
 
 #### Coefficients and variability explained
 
-Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability.
+The full summary of coefficients can be found in appendix A5. 
 
-```{r modelCoeff}
-summary(fit2)$coefficients
+```{r modelSelectionVariability, echo = FALSE}
 adjRSquared2 <- summary(fit2)$adj.r.squared
-adjRSquared2
-
-summary(fit3)$coefficients
 adjRSquared3 <- summary(fit3)$adj.r.squared
-adjRSquared3
-
 ```
 
-In the second model, the transmission type explains `{r round(adjRSquared2, 2) * 100}`% of the variability in MPG, while the third explains `{r round(adjRSquared3, 2) * 100}`% and it's still parsimonious, even more than the previous one.
+Because this are multivariable models, the adjusted R-squared is a better metric to evaluate variability. In the second model, the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while the third explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
 
 
 
@@ -155,5 +146,28 @@ boxplot(mpg ~ am, data = mtcars,
         main = "Fuel consumption by transmission types")
 ```
 
-*Figure N. Boxplot of fuel consumption by transmission types*
 
+### A3. Coefficients summary of the primary model
+
+```{r primaryModelCoeffTable}
+coeffPrimary
+rSquaredPrimary
+```
+
+
+### A4. Summary of analysis of variance (ANOVA)
+
+```{r secondaryModelsAnovaTable}
+anova(fitPrimary, fit2, fit3, fit4, fit5, fit6)
+```
+
+
+### A5. Coefficients summaries of models 2 and 3
+
+```{r modelSelectionCoeffTable}
+summary(fit2)$coefficients
+adjRSquared2
+
+summary(fit3)$coefficients
+adjRSquared3
+```
