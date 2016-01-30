@@ -15,9 +15,11 @@ opts_chunk$set(warning = TRUE, #Make it FALSE for distribution!
 ```
 
 
-## Execute Summary
+## Executive Summary
 
 The current report aims to investigate the relationship between the type of transmission and fuel consumption based on data of 32 cars tested by Motor Trend US magazine for an issue published in 1974. The main target is to assess if automatic or manual transmission is better for MPG (miles per US gallon), and quantify the consumption difference for the mentioned transmission types.
+
+The study concludes that manual transmission is better for MPG in average by 2.08 miles/gallon, but always considering not only the transmission type, but also engine horsepower and car weight, to explain this variability more accurately.
 
 
 ## Exploratory Data Analysis
@@ -53,7 +55,7 @@ The boxplot of fuel consumption by transmission type can be found in appendix A2
 
 ### Primary model
 
-As a first step we fit a primary linear model with Miles/US gallon (variable `mpg`) as outcome and transmission type (variabla `am`) as regressor.
+As a first step we fit a primary linear model with Miles/US gallon (variable `mpg`) as outcome and transmission type (variable `am`) as regressor.
 
 ```{r primaryModel}
 fitPrimary <- lm(mpg ~ am, data = mtcars)
@@ -115,16 +117,16 @@ The full summary of coefficients can be found in appendix A5. Because this are m
 
 After looking at the residuals and some diagnostics metrics, we can conclude there is no potential problems with the selected model.
 
-Plots of this features can be found in appendix A6. Regarding potencial influence and leverage points, the tables can be found in appendix A7.
+Plots of this features can be found in appendix A6. The Residuals vs. Fitted shows the points are randomly distributed, no hint of a pattern, meaning the points are statistically independent. Q-Q shows normal distribution of the residuals. Regarding potencial influence and leverage points, plot of Residual vs. Leverage suggests there is no potential problem, as confirmed by the tables in appendix A7.
 
 
 ## Conclusions
 
-- Is an automatic or manual transmission better for MPG?
-<<COMPLETE!!>>
+- **Is an automatic or manual transmission better for MPG?**
+In general, manual transmission is better for MPG, but horsepower and weight are very important factors to explain this improvement.
 
-- Quantify the MPG difference between automatic and manual transmissions.
-<<COMPLETE!!>>
+- **Quantify the MPG difference between automatic and manual transmissions.**
+Holding constant the variables horsepower and weight, manual transmissions are better in average by 2.08 miles/gallon. This value is extracted from the summary table of the model 3, in appendix A5.
 
 
 ## Appendix
@@ -194,4 +196,4 @@ All `dfbetas` are small, no points with high potential for influence.
 round(hatvalues(fit3), 3)
 ```
 
-The point for `Maserati Bora` has high potential for leverage but no influence.
+The point for `Maserati Bora` has high potential for leverage but no influence. Therefore, it can't be considered as outlier.
