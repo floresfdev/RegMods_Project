@@ -36,19 +36,17 @@ rowNumber <- nrow(mtcars)
 colNumber <- ncol(mtcars)
 ```
 
-The source dataset has `r colNumber` columns of information from `r rowNumber` cars. The information contained in some of the variables is needing reformat for the sake of the current analysis. For the specifics of columns `vs` and `am` see [this post in StackOverflow](http://stackoverflow.com/questions/18617174/r-mtcars-dataset-meaning-of-vs-variable)
+The source dataset has `r colNumber` columns of information from `r rowNumber` cars. Some of the variables are needing reformat for the sake of the analysis. For the specifics of columns `vs` and `am` see [this post in StackOverflow](http://stackoverflow.com/questions/18617174/r-mtcars-dataset-meaning-of-vs-variable)
 
 ```{r reformatData}
-mtcars$cyl <- as.factor(mtcars$cyl)    ## Number of cylinders
-mtcars$gear <- as.factor(mtcars$gear)  ## Number of forward gears
-mtcars$carb <- as.factor(mtcars$carb)  ## Number of carburetors
-mtcars$vs <- as.factor(mtcars$vs)      ## Straight or V-engine
+mtcars$cyl <- as.factor(mtcars$cyl); mtcars$gear <- as.factor(mtcars$gear)
+mtcars$carb <- as.factor(mtcars$carb); mtcars$vs <- as.factor(mtcars$vs)
 levels(mtcars$vs) <- c("V-engine", "Straight engine")
 mtcars$am <- as.factor(mtcars$am)      ## Transmission
 levels(mtcars$am) <- c("Automatic", "Manual")
 ```
 
-The boxplot of fuel consumption by transmission type can be found in appendix A2. This plot gives helpful information about how well manual and automatic transmission performs regarding MPG for the cars tested, but in order to answer the questions of interest we have to analyze regression models.
+The boxplot of fuel consumption by transmission type can be found in appendix A2. It gives helpful information about how well manual and automatic transmission are for MPG in the cars tested, but in order to answer the questions of interest we have to fit regression models.
 
 
 ## Regression Models
@@ -65,9 +63,7 @@ fitPrimary <- lm(mpg ~ am, data = mtcars)
 coeffPrimary <- summary(fitPrimary)$coefficients
 ```
 
-The coefficient summary table can be found in appendix A3. In the model, `r round(coeffPrimary[1], 2)` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r round(coeffPrimary[2], 2)` is an additional increase to the mentioned MPG mean.
-
-The p-value is 0.0002, being <0.05 means this model is statistically significant.
+The coefficient summary table can be found in appendix A3. In the model, `r round(coeffPrimary[1], 2)` is the empirical MPG mean for cars with automatic transmission. For the case of manual transmission, the value of `r round(coeffPrimary[2], 2)` is an additional increase to the mentioned MPG mean. The p-value is 0.0002, being <0.05 means this model is statistically significant.
 
 ```{r primaryModelRSquared, echo = FALSE}
 rSquaredPrimary <- summary(fitPrimary)$r.squared
@@ -84,9 +80,9 @@ After researching general information about the car features described on the da
 - `wt`: Weight (lb/1000).
 - `qsec`: 1/4 mile time, which can be a good measure of acceleration by proxy.
 - `gear`: Number of forward gears, which is related to transmission.
-- `carb`: Number of carburetors, the device in charge of air-fuel mix for better consumption performance.
+- `carb`: Number of carburetors, the device in charge of air-fuel mix for better consumption.
 
-Besides the transmission type (`am`), this 5 variables are included one by one in nested models to look for a fitted linear model that can explain better the MPG variability.
+Besides the transmission type (`am`), this 5 variables are included one by one in nested models to look for a better explanation of the MPG variability.
 
 ```{r secondaryModels}
 fit2 <- update(fitPrimary, mpg ~ am + hp)
@@ -110,14 +106,12 @@ adjRSquared3 <- summary(fit3)$adj.r.squared
 
 The full summary of coefficients can be found in appendix A5. Because this are multivariable models, the adjusted R-squared is a better metric. In model 2 the transmission type explains `r round(adjRSquared2, 2) * 100`% of the variability in MPG, while model 3 explains `r round(adjRSquared3, 2) * 100`% and it's still parsimonious, even more than the previous one.
 
-**Therefore, in this setting the better linear model to predict MPG is the one which fits transmission type, horsepower and weight as regressors.**
+**Therefore, in this setting, model 3 is better to predict MPG by fitting transmission type, horsepower and weight as regressors.**
 
 
 #### Residuals and diagnostics
 
-After looking at the residuals and some diagnostics metrics, we can conclude there is no potential problems with the selected model.
-
-Plots of this features can be found in appendix A6. The Residuals vs. Fitted shows the points are randomly distributed, no hint of a pattern, meaning the points are statistically independent. Q-Q shows normal distribution of the residuals. Regarding potencial influence and leverage points, plot of Residual vs. Leverage suggests there is no potential problem, as confirmed by the tables in appendix A7.
+After looking at the residuals and some diagnostics metrics, we can conclude there is no potential problems with the selected model. Plots of this features can be found in appendix A6. The Residuals vs. Fitted shows the points are randomly distributed, no hint of a pattern, meaning the points are statistically independent. Q-Q shows normal distribution of the residuals. Regarding potencial influence and leverage points, plot of Residual vs. Leverage suggests there is no potential outliers, as confirmed by the tables in appendix A7.
 
 
 ## Conclusions
@@ -126,7 +120,7 @@ Plots of this features can be found in appendix A6. The Residuals vs. Fitted sho
 In general, manual transmission is better for MPG, but horsepower and weight are very important factors to explain this improvement.
 
 - **Quantify the MPG difference between automatic and manual transmissions.**
-Holding constant the variables horsepower and weight, manual transmissions are better in average by 2.08 miles/gallon. This value is extracted from the summary table of the model 3, in appendix A5.
+Holding constant the variables horsepower and weight, manual transmissions are better in average by 2.08 miles/gallon. This value is extracted from the summary table of model 3, in appendix A5.
 
 
 ## Appendix
@@ -140,12 +134,10 @@ str(mtcars)
 
 ### A2. Boxplot of fuel consumption by transmission type
 
-```{r boxplot, fig.width = 10, fig.height = 5}
+```{r boxplot, fig.width = 8, fig.height = 4}
 par(mfrow = c(1, 1), mar = c(4, 4, 2, 1))
-boxplot(mpg ~ am, data = mtcars,
-        col = c("coral", "aquamarine"),
-        xlab = "Transmission type",
-        ylab = "Miles/US gallon (mpg)",
+boxplot(mpg ~ am, data = mtcars, col = c("coral", "aquamarine"),
+        xlab = "Transmission type", ylab = "Miles/US gallon (mpg)",
         main = "Fuel consumption by transmission types")
 ```
 
